@@ -3,8 +3,8 @@
 // Imi cer scuze in avans
 
 #include <stdlib.h>
-
 #include <stdio.h>
+
 typedef struct Node
 {
     int data;
@@ -67,15 +67,15 @@ int is_empty(NODE *queue)
     return queue == NULL;
 }
 
-void enqueue(NODE ***queue, int data)
+void enqueue(NODE *queue, int data)
 {
     NODE *new_node = create_node(data);
 
-    if (is_empty(*queue))
-        *queue = new_node;
+    if (is_empty(queue))
+        queue = new_node;
     else
     {
-        NODE *temp = *queue;
+        NODE temp = *queue;
         while (temp->next)
         {
             temp = temp->next;
