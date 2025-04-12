@@ -38,9 +38,6 @@ void addEdge(GPH *Graph, int src, int dest)
     NODE *nn = createNode(dest);
     nn->next = Graph->adjacency_list[src];
     Graph->adjacency_list[src] = nn;
-    nn = createNode(src);
-    nn->next = Graph->adjacency_list[dest];
-    Graph->adjacency_list[dest] = nn;
 }
 
 GPH *createGraph(int verticies)
@@ -97,6 +94,7 @@ void insertEdges(GPH *Graph, int number_of_edges, int number_of_verticies)
     for (i = 0; i < number_of_edges; i++)
     {
         scanf("%d%d", &src, &dest);
+        printf("addEdge\n");
         addEdge(Graph, src, dest);
     }
 }
@@ -111,25 +109,31 @@ void wipe(GPH *Graph, int number_of_verticies)
 
 void isReachable(GPH *Graph, int number_of_verticies, STK *s1, STK *s2) // 0 sau 1 daca poate fi sau nu ajuns
 {
-    int isReachable = 0;
-    int ans;
+    printf("isReachable\n");
+    int canbe = 0;
+    
     for (int i = 0; i < number_of_verticies; i++) // aici i tine loc de numar adica de restaurant
     {
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < number_of_verticies; j++)
         {
             DFS(Graph, s1, i);
             wipe(Graph, number_of_verticies);
             DFS(Graph, s2, j);
-            for (int j = 0; j < number_of_verticies && !ans; j++)
+            for (int j = 0; j < number_of_verticies && !canbe; j++)
             {
-                for (int i = 0; i < number_of_verticies && !ans; i++)
+                for (int i = 0; i < number_of_verticies && !canbe; i++)
                 {
                     if ((s1->arr[i] == j) && (s2->arr[j] == i))
-                        isReachable = 1;
+                        canbe = 1;
                 }
             }
         }
     }
+
+    if(canbe)
+        printf("can be reached");
+    else
+        printf("cannot be reached");
 }
 
 int main()
@@ -150,10 +154,15 @@ int main()
 
     GPH *Graph = createGraph(number_of_verticies);
 
+    printf("1\n");
     STK *s1 = createStack(2 * number_of_verticies);
+    printf("2\n");
     STK *s2 = createStack(2 * number_of_verticies);
+    printf("3\n");
 
-    insertEdges(&Graph, number_of_edges, number_of_verticies);
+    insertEdges(Graph, number_of_edges, number_of_verticies);
+    printf("4\n");
 
-    isReachable(&Graph, number_of_verticies, s1, s2);
+    isReachable(Graph, number_of_verticies, s1, s2);
+    printf("5\n");
 }
